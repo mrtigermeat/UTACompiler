@@ -1,0 +1,32 @@
+# top
+title: UTACompiler
+how_to: Tool created by [tigermeat](https://tigermeat.xyz). Please refer to the documentation [here](slay) for instructions on using this tool.
+
+# left
+db_path: UTAU Voice Library Path
+config: Configuration
+config_exp: Please adjust the configuration based on your UTAU Library.
+db_name: Name of your Voice Library.
+seed: Randomization Seed
+recording_style: Voice Library Recording Style
+keep_files: Files to keep in the compiled Voice Library. Separate each with a comma.
+keep_folders: Folders to keep in the compiled Voice Library. NOT for Pitches. Separate each with a comma.
+pitches: Folders containing .wav and oto.ini files. Separate each with a comma.
+
+# right
+config_adv: Advanced Configuration
+config_adv_exp: Advanced configuration options. If you are unsure, leave all options unchanged.
+file_encoding: File Encoding
+run_button: Compile Voice Library
+scramble: Randomize order
+glob_amt: Amount of samples per file.
+encoding_options: Encoding Options
+encoder_active: Apply audio encoding
+gen_options: Options for randomly generated encoding audio
+pad_val: oto offset & cutoff padding value
+min_frq: Minimum frequency of tone
+max_frq: Maximum frequency of tone
+min_dur: Minimum duration of tone
+max_dur: Maximum duration of tone
+min_vol: Minimum volume of tone
+max_vol: Maximum volume of tone

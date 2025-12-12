@@ -1,0 +1,32 @@
+# top
+title: UTACompiler
+how_to: Tool created by [tigermeat](https://tigermeat.xyz). Please refer to the documentation [here](slay) for instructions on using this tool.
+
+# left
+db_path: UTAU音源のパス
+config: 構成
+config_exp: UTAU音源のための構成を設定してください。
+db_name: UTAU音源の名前
+seed: シード値
+recording_style: 記録方式
+keep_files: コンパイルされた音源に残しておきたいファイル。カンマで区切ってください。
+keep_folders: コンパイルされた音源に残しておきたいフォルダ。ピッチのためじゃない。カンマで区切ってください。
+pitches: .wavとoto.iniファイルがあるのフォルダ。カンマで区切ってください。
+
+# right
+config_adv: 先進構成
+config_adv_exp: 不明な場合は、そのままにしてください。
+file_encoding: ファイルエンコード
+run_button: 音源をコンパイル
+scramble: 体制はランダムにします
+glob_amt: ファイルあたりのサンプル数
+encoding_options: エンコードの設定
+encoder_active: 音声エンコードにします
+gen_options: ランダム生成された音声の設定
+pad_val: oto.iniのoffsetとcutoffのパッド値
+min_frq: ランダム音声の最低な周波数
+max_frq: ランダム音声の最高な周波数
+min_dur: ランダム音声の最低なduration
+max_dur: ランダム音声の最高なduration
+min_vol: ランダム音声の最低なvolumえ
+max_vol: ランダム音声の最高なvolume

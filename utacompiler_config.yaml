@@ -1,0 +1,26 @@
+name: 'UtaneUta'
+seed: 525
+recording_style: CV
+files:
+  keep_files:
+    - $read
+    - character.txt
+    - character.yaml
+    - desc.mrq
+    - prefix.map
+    - readme.txt
+  keep_folders: ''
+  pitches:
+    - src
+  file_encoding: shift-jis
+  scramble: true
+  glob: 8
+encoding:
+  enabled: true
+  min_frq: 200
+  max_frq: 1000
+  min_dur: 1.0 #ms
+  max_dur: 5.0 #ms
+  min_vol: 0.2
+  max_vol: 0.6
+  pad_val: 1.0 #ms

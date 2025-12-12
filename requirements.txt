@@ -1,0 +1,7 @@
+numpy
+pydub
+loguru
+ftfy
+tqdm
+gradio
+ez-localizr

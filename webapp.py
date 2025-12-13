@@ -254,7 +254,7 @@ def gui() -> None:
 
 			<div class="bottom-right">
 				<a href="https://notbyai.fyi/" target="_blank rel="noopener noreferrer">
-					<img src="https://tigermeat.xyz/assets/images/image11.png?v=b1ae5e1a">
+					<img src="https://github.com/mrtigermeat/UTACompiler/blob/main/src/img/notbyai.png?raw=true">
 				</a>
 			</div>
 		""")

@@ -242,20 +242,33 @@ def gui() -> None:
 
 		gr.HTML("""
 			<style>
-				.bottom-right {
+				.bottom-right-inline {
+					display: inline-block;
+					align: center;
+				}
+
+				.parent {
+					padding: 1rem;
 					position: fixed;
 					bottom: 0;
 					right: 0;
-					padding: 15px;
-					margin: 10px;
+					padding: 2rem;
+					margin: 1rem;
 					z-index: 1000;
 				}
 			</style>
 
-			<div class="bottom-right">
-				<a href="https://notbyai.fyi/" target="_blank rel="noopener noreferrer">
-					<img src="https://github.com/mrtigermeat/UTACompiler/blob/main/src/img/notbyai.png?raw=true" width="131">
-				</a>
+			<div class="parent">
+				<div class="bottom-right-inline">
+					<a href="https://notbyai.fyi/" target="_blank" rel="noopener noreferrer">
+						<img src="https://github.com/mrtigermeat/UTACompiler/blob/main/src/img/notbyai.png?raw=true" alt="Not by AI badge" width="131">
+					</a>
+				</div>
+				<div class="bottom-right-inline">
+					<a href="https://tigermeat.xyz/" target="_blank" rel="noopener noreferrer">
+						<img src="https://github.com/mrtigermeat/UTACompiler/blob/main/src/img/tgm.png?raw=true" alt="Developed by tigermeat" width="42">
+					</a>
+				</div>
 			</div>
 		""")
 

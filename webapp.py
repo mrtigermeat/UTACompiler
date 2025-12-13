@@ -254,7 +254,7 @@ def gui() -> None:
 
 			<div class="bottom-right">
 				<a href="https://notbyai.fyi/" target="_blank rel="noopener noreferrer">
-					<img src="https://github.com/mrtigermeat/UTACompiler/blob/main/src/img/notbyai.png?raw=true">
+					<img src="https://github.com/mrtigermeat/UTACompiler/blob/main/src/img/notbyai.png?raw=true" width="131">
 				</a>
 			</div>
 		""")
@@ -276,4 +276,5 @@ if __name__ == "__main__":
 			logger.remove()
 			logger.add(sys.stdout, format=logger_format, level="DEBUG")
 		gui()
+
 	main()

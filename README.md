@@ -3,6 +3,15 @@ _Compile & Encode your UTAU Voicebank_
 
 UTACompiler is a tool that extracts the necessary audio from your UTAU library based on the oto.ini file and scrambles it, with the option to include randomized noise to deter misuse of your recordings!
 
+<div align="center">
+  <p>
+    <sub>No Generative AI was used in the creation of UTACompiler or any component written for it.</sub>
+  </p>
+  <a href="https://notbyai.fyi/ target="_blank" rel="noopener noreferrer">
+    <img src="src/img/notbyai.png" alt="Not by AI badge.">
+  </a>
+</div>
+
 ## How to use (Manual setup)
 Step 1: Clone the repository, setup a new environment (I use conda) and install requirements.
 ```

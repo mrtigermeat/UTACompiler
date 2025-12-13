@@ -3,19 +3,18 @@ import os
 import gradio as gr
 from pathlib import Path
 from ezlocalizr import ezlocalizr
-from loguru import logger
-
-from UTACompiler import utacompiler
 
 root_dir = Path(__file__).parent.parent.resolve()
 os.environ['PYTHONPATH'] = str(root_dir)
 sys.path.insert(0, str(root_dir))
 
-logger_format = "{time:HH:mm:ss} | <lvl>{level}</lvl> | <lvl>{message}</lvl>"
-logger.remove()
-logger.add(sys.stdout, format=logger_format, level="INFO")
+from UTACompiler import utacompiler
+from utils.logger_utils import get_logger
+
+logger = get_logger(level="INFO")
 
 webapp_src = Path('src')
+assert webapp_src.exists()
 
 if sys.platform in ['linux', 'linux2', 'darwin']:
 	sys_lang = os.environ['LANG']
@@ -254,7 +253,9 @@ def gui() -> None:
 			</style>
 
 			<div class="bottom-right">
-				<img src="https://notbyai.fyi/img/not-by-ai.svg">
+				<a href="https://notbyai.fyi/" target="_blank rel="noopener noreferrer">
+					<img src="https://tigermeat.xyz/assets/images/image11.png?v=b1ae5e1a">
+				</a>
 			</div>
 		""")
 
@@ -263,7 +264,6 @@ def gui() -> None:
 		inbrowser=True,
 		quiet=True,
 		favicon_path=webapp_src/'tgm.ico',
-		allowed_paths=["./src/img/notbyai.png"]
 	)
 
 if __name__ == "__main__":

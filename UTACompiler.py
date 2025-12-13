@@ -6,122 +6,25 @@ import os
 import yaml
 import random
 import shutil
-import numpy as np
 from pydub import AudioSegment
 from pathlib import Path
-from loguru import logger
 from ftfy import fix_text
-from itertools import islice
-from tqdm import tqdm
 
 root_dir = Path(__file__).parent.parent.resolve()
 os.environ['PYTHONPATH'] = str(root_dir)
 sys.path.insert(0, str(root_dir))
 
-logger_format = "{time:HH:mm:ss} | <lvl>{level}</lvl> | <lvl>{message}</lvl>"
-logger.remove()
-logger.add(sys.stdout, format=logger_format, level="INFO")
+# UTACompiler specific imports
+from utils.audio_utils import generate_tone, process_audiosegment, match_amplitude
+from utils.utils import load_config, n_float
+from utils.logger_utils import get_logger
+from utils.oto_utils import load_oto, oto_chunker, reconstruct_oto
+
+logger = get_logger(level="INFO")
 
 STYLES = ['CV', 'VCV', 'CVVC', 'VCCV']
 
-def load_config(config_loc: Path) -> dict:
-	try:
-		with open(str(config_loc), 'r', encoding='utf-8') as c:
-			config = yaml.safe_load(c.read())
-			c.close()
-		if not config['recording_style'] in STYLES:
-			logger.error(f'UTACompiler does not support recording style {config['recording_style']}.')
-			sys.exit(1)
-		logger.info('Successfully loaded config file.')
-		return config
-	except yaml.YAMLError as e:
-		logger.error(f'Unable to load config file: {e}')
-		sys.exit(1)
-	except Exception as e:
-		logger.error(f'Unidentified error loading config: {e}')
-		sys.exit(1)
-
-def n_float(value) -> float:
-	return float(f"{float(value):.3f}")
-
-def load_oto(pitch_path: Path, config: dict) -> list:
-	oto_out = []
-	try:
-		with open(str(pitch_path / 'oto.ini'), 'r', encoding=config['files']['file_encoding']) as f:
-			for line in f:
-				fline = fix_text(line).rstrip()
-				wav_name, remainder = fline.split('=')
-				wav_path = pitch_path / wav_name
-				alias, offset, consonant, cutoff, preutt, overlap = remainder.split(',')
-
-				# cutoff fix to make shit easier
-				if float(cutoff) > 0:
-					x = AudioSegment.from_file(wav_path)
-					cutoff = n_float(-((len(x) - (float(offset) + float(cutoff)))))
-
-				oto_out.append({
-						'alias': alias,
-						'wav_name': str(wav_path),
-						'offset': n_float(offset),
-						'consonant': n_float(consonant),
-						'cutoff': cutoff,
-						'preutt': n_float(preutt),
-						'overlap': n_float(overlap)
-					})
-			f.close()
-		logger.info(f'Successfully read oto.ini in {str(pitch_path)}.')
-		return oto_out
-	except SyntaxError as e:
-		logger.error(f'Unable to process oto because you did not select the proper file encoding in your configuration. {e}')
-		sys.exit(1)
-
-def oto_chunker(oto: list, config: dict) -> list:
-	it = iter(oto)
-	chunks = []
-	while True:
-		chunk = list(islice(it, config['files']['glob']))
-		if not chunk:
-			break
-		chunks.append(chunk)
-	return chunks
-
-def match_amplitude(x: AudioSegment, target: float = -30.0) -> AudioSegment:
-	change = target - x.dBFS
-	return x.apply_gain(change)
-
-def generate_tone(config: dict) -> AudioSegment:
-	silence = AudioSegment.silent(duration=50)
-	sig_type = random.choice(['sine', 'square', 'triangle'])
-	freq = random.randint(config['encoding']['min_frq'], config['encoding']['max_frq'])
-	dur = random.uniform(config['encoding']['min_dur'], config['encoding']['max_dur'])
-	dur = round(dur, 3)
-	dur /= 100
-	volume = random.uniform(config['encoding']['min_vol'], config['encoding']['max_vol'])
-	t = np.linspace(0, dur, int(44100 * dur), False)
-	if sig_type == 'sine':
-		gen_x = np.sin(2 * np.pi * freq * t) * volume
-	elif sig_type == 'square':
-		gen_x = np.sign(np.sin(2 * np.pi * freq * t)) * volume
-	elif sig_type == 'triangle':
-		gen_x = 2 * np.abs(2 * (t * freq * np.floor(t * freq * 0.5))) - 1
-		gen_x *= volume
-	x = (gen_x * 32767).astype(np.uint64)
-	y = match_amplitude(AudioSegment(
-			x.tobytes(),
-			frame_rate=44100,
-			sample_width=2,
-			channels=1,
-		))
-	fade_amt = len(y) / 10
-	y = y.fade_in(fade_amt).fade_out(fade_amt)
-	return silence + y + silence
-
-def process_audiosegment(x: AudioSegment) -> AudioSegment:
-	x.set_channels(1)
-	x.set_frame_rate(44100)
-	return x.set_sample_width(2)
-
-def encode_audio(oto: list, config: dict, build_path: Path) -> list:
+def encode(oto: list, config: dict, build_path: Path) -> list:
 	logger.info('Encoding audio & automatically adjusting oto...')
 	out_fn = build_path / 'src'
 	new_oto = []
@@ -201,23 +104,6 @@ def encode_audio(oto: list, config: dict, build_path: Path) -> list:
 			sys.exit(1)
 	return new_oto
 
-def reconstruct_oto(new_oto: list, config: dict, build_path: Path) -> None:
-	logger.info('Reconstructing oto file.')
-	out_fn = build_path / 'src'
-	try:
-		with open(out_fn / 'oto.ini', 'w', encoding=config['files']['file_encoding']) as o:
-			for i, entry in enumerate(tqdm(new_oto)):
-				string = f"{entry['wav_name']}={entry['alias']},{entry['offset']},{entry['consonant']},{entry['cutoff']},{entry['preutt']},{entry['overlap']}"
-				if i == 0:
-					o.write(string)
-				else:
-					o.write('\n'+string)
-			o.close()
-		logger.success('Successfully exported oto.')
-	except Exception as e:
-		logger.error(f'Unable to reconstruct oto: {e}')
-		sys.exit(1)
-
 def utacompiler(db_path: Path, config: dict) -> None:
 	logger.success('UTACompiler: Compile & Encode your UTAU Voice Library.')
 	seed = config['seed']
@@ -272,7 +158,7 @@ def utacompiler(db_path: Path, config: dict) -> None:
 	if config['files']['scramble']:
 		oto = sorted(oto, key=lambda x: random.random())
 
-	new_oto = encode_audio(oto, config, build_path)
+	new_oto = encode(oto, config, build_path)
 	reconstruct_oto(new_oto, config, build_path)
 	logger.success('UTACompiler has completed your voice library. Please rigorously test to ensure everything is well.')
 
@@ -282,7 +168,6 @@ if __name__ == "__main__":
 	@click.command(help='UTACompiler: Compile & Encode your UTAU Voice Library.')
 	@click.argument('path', metavar='PATH')
 	@click.option('--config', '-c', type=str, help='Define non-default location for utacompiler_config.yaml.')
-	@click.option('--silent', '-s', is_flag=True, help='Turns off logger.')
 	def main(path: str, config: str, silent: bool) -> None:
 		if silent:
 			logger.remove()

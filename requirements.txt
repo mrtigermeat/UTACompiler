@@ -5,3 +5,4 @@ ftfy
 tqdm
 gradio
 ez-localizr
+click

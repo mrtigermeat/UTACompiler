@@ -1,6 +1,6 @@
-###												###
-###	No AI was used in the writing of this code. ###	
-###												###
+###															###
+###	No Generative AI was used in the writing of this code.	###	
+###															###
 import sys
 from loguru import logger
 

@@ -1,6 +1,6 @@
-###												###
-###	No AI was used in the writing of this code. ###	
-###												###
+###															###
+###	No Generative AI was used in the writing of this code.	###	
+###															###
 import sys
 import os
 import yaml
@@ -9,6 +9,7 @@ import shutil
 from pydub import AudioSegment
 from pathlib import Path
 from ftfy import fix_text
+from tqdm import tqdm
 
 root_dir = Path(__file__).parent.parent.resolve()
 os.environ['PYTHONPATH'] = str(root_dir)
@@ -18,11 +19,9 @@ sys.path.insert(0, str(root_dir))
 from utils.audio_utils import generate_tone, process_audiosegment, match_amplitude
 from utils.utils import load_config, n_float
 from utils.logger_utils import get_logger
-from utils.oto_utils import load_oto, oto_chunker, reconstruct_oto
+from utils.oto_utils import load_oto, oto_chunker, reconstruct_oto, oto_condenser
 
 logger = get_logger(level="INFO")
-
-STYLES = ['CV', 'VCV', 'CVVC', 'VCCV']
 
 def encode(oto: list, config: dict, build_path: Path) -> list:
 	logger.info('Encoding audio & automatically adjusting oto...')
@@ -57,6 +56,7 @@ def encode(oto: list, config: dict, build_path: Path) -> list:
 			end = n_float(entry['cutoff'])
 			length = n_float(len(y))
 
+			# Adjust cutoff
 			if end > 0:
 				end = length - end
 			else:
@@ -65,31 +65,27 @@ def encode(oto: list, config: dict, build_path: Path) -> list:
 			if recording_style == 'CV' or pad_val == 0.0:
 				offset = n_float(len(x))
 				y_slice = y[start:end]
-				cutoff = (n_float(len(y_slice))) * -1
+				cutoff = ((n_float(len(y_slice))) * -1) + 10
 			else:
 				offset = n_float(len(x)) + pad_val
 				y_slice = y[start-pad_val:end+pad_val]
-				y_slice = y_slice.fade_in(pad_val).fade_out(pad_val)
-				cutoff = (n_float(len(y_slice)) - pad_val) * -1
+				y_slice = y_slice.fade_in(pad_val/4.0).fade_out(pad_val/4.0)
+				cutoff = ((n_float(len(y_slice)) - pad_val) * -1) + 10
 
 			x += y_slice
 
 			if encoding_enabled and i < config['files']['glob'] - 1:
-				t = generate_tone(config)
-			else:
-				t = AudioSegment.empty()
-
-			x += t
+				x += generate_tone(config)
 
 			new_oto.append({
-					'alias': entry['alias'],
-					'wav_name': str(audio_fn),
-					'offset': offset,
-					'consonant': n_float(entry['consonant']),
-					'cutoff': cutoff,
-					'preutt': n_float(entry['preutt']),
-					'overlap': n_float(entry['overlap']),
-				})
+				'alias': entry['alias'],
+				'wav_name': str(audio_fn),
+				'offset': offset,
+				'consonant': n_float(entry['consonant']),
+				'cutoff': cutoff,
+				'preutt': n_float(entry['preutt']),
+				'overlap': n_float(entry['overlap']),
+			})
 
 		audio_idx += 1
 
@@ -155,10 +151,15 @@ def utacompiler(db_path: Path, config: dict) -> None:
 		pitch_path = db_path / pitch
 		pitch_oto = load_oto(pitch_path, config)
 		oto.extend(pitch_oto)
+
 	if config['files']['scramble']:
 		oto = sorted(oto, key=lambda x: random.random())
 
 	new_oto = encode(oto, config, build_path)
+
+	if config['encoding']['optimize']:
+		new_oto = oto_condenser(new_oto)
+
 	reconstruct_oto(new_oto, config, build_path)
 	logger.success('UTACompiler has completed your voice library. Please rigorously test to ensure everything is well.')
 
@@ -168,11 +169,7 @@ if __name__ == "__main__":
 	@click.command(help='UTACompiler: Compile & Encode your UTAU Voice Library.')
 	@click.argument('path', metavar='PATH')
 	@click.option('--config', '-c', type=str, help='Define non-default location for utacompiler_config.yaml.')
-	def main(path: str, config: str, silent: bool) -> None:
-		if silent:
-			logger.remove()
-			logger.add(sys.stdout, format=logger_format, level="CRITICAL")
-
+	def main(path: str, config: str) -> None:
 		db_path = Path(path)
 		if config:
 			config_loc = Path(config)

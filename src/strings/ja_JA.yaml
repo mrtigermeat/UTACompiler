@@ -24,6 +24,7 @@ encoding_options: エンコードの設定
 encoder_active: 音声エンコードにします
 gen_options: ランダム生成された音声の設定
 pad_val: oto.iniのoffsetとcutoffのパッド値
+optimize: Optimize oto by condensing identical entries.
 min_frq: ランダム音声の最低な周波数
 max_frq: ランダム音声の最高な周波数
 min_dur: ランダム音声の最低なduration

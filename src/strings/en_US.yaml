@@ -24,6 +24,7 @@ encoding_options: Encoding Options
 encoder_active: Apply audio encoding
 gen_options: Options for randomly generated encoding audio
 pad_val: oto offset & cutoff padding value
+optimize: Optimize oto by condensing identical entries.
 min_frq: Minimum frequency of tone
 max_frq: Maximum frequency of tone
 min_dur: Minimum duration of tone

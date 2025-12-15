@@ -1,6 +1,6 @@
-###												###
-###	No AI was used in the writing of this code. ###	
-###												###
+###															###
+###	No Generative AI was used in the writing of this code.	###	
+###															###
 import sys
 from pathlib import Path
 from pydub import AudioSegment
@@ -29,7 +29,7 @@ def load_oto(pitch_path: Path, config: dict) -> list:
 					cutoff = n_float(-((len(x) - (float(offset) + float(cutoff)))))
 
 				oto_out.append({
-						'alias': alias,
+						'alias': [alias],
 						'wav_name': str(wav_path),
 						'offset': n_float(offset),
 						'consonant': n_float(consonant),
@@ -60,7 +60,8 @@ def reconstruct_oto(new_oto: list, config: dict, build_path: Path) -> None:
 	try:
 		with open(out_fn / 'oto.ini', 'w', encoding=config['files']['file_encoding']) as o:
 			for i, entry in enumerate(tqdm(new_oto)):
-				string = f"{entry['wav_name']}={entry['alias']},{entry['offset']},{entry['consonant']},{entry['cutoff']},{entry['preutt']},{entry['overlap']}"
+				for alias in entry['alias']:
+					string = f"{entry['wav_name']}={alias},{entry['offset']},{entry['consonant']},{entry['cutoff']},{entry['preutt']},{entry['overlap']}"
 				if i == 0:
 					o.write(string)
 				else:
@@ -70,3 +71,26 @@ def reconstruct_oto(new_oto: list, config: dict, build_path: Path) -> None:
 	except Exception as e:
 		logger.error(f'Unable to reconstruct oto: {e}')
 		sys.exit(1)
+
+def oto_condenser(oto: list) -> list:
+	alias_groups = {}
+	for entry in oto:
+		values = (entry['offset'], entry['consonant'], entry['cutoff'], entry['preutt'], entry['overlap'])
+		assert len(values) == 5
+		key = (values, entry['wav_name'])
+		if key not in alias_groups:
+			alias_groups[key] = []
+		alias_groups[key].extend(entry['alias'])
+
+	condensed_oto = []
+	for (values, wav_name), aliases in alias_groups.items():
+		condensed_oto.append({
+				'alias': list(set(aliases)),
+				'wav_name': wav_name,
+				'offset': values[0],
+				'consonant': values[1],
+				'cutoff': values[2],
+				'preutt': values[3],
+				'overlap': values[4],
+			})
+	return condensed_oto

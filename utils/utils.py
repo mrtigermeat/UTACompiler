@@ -1,6 +1,6 @@
-###												###
-###	No AI was used in the writing of this code. ###	
-###												###
+###															###
+###	No Generative AI was used in the writing of this code.	###	
+###															###
 import sys
 import yaml
 from loguru import logger
@@ -9,6 +9,8 @@ from pathlib import Path
 logger_format = "{time:HH:mm:ss} | <lvl>{level}</lvl> | <lvl>{message}</lvl>"
 logger.remove()
 logger.add(sys.stdout, format=logger_format, level="INFO")
+
+STYLES = ['CV', 'VCV', 'CVVC', 'VCCV']
 
 def load_config(config_loc: Path) -> dict:
 	try:

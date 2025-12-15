@@ -1,3 +1,6 @@
+###															###
+###	No Generative AI was used in the writing of this code.	###	
+###															###
 import sys
 import os
 import gradio as gr
@@ -50,7 +53,8 @@ def run_tool(
 	max_dur: float,
 	min_vol: float,
 	max_vol: float,
-	pad_val: float
+	pad_val: float,
+	optimize: bool,
 ) -> None:
 	config = {}
 	config['name'] = db_name
@@ -75,6 +79,8 @@ def run_tool(
 	config['encoding']['min_vol'] = min_vol
 	config['encoding']['max_vol'] = max_vol
 	config['encoding']['pad_val'] = pad_val
+	config['encoding']['optimize'] = optimize
+	config['recording_style'] = recording_style
 	
 	try:
 		utacompiler(db_path, config)
@@ -148,12 +154,17 @@ def gui() -> None:
 					with gr.Row():
 						pad_val = gr.Slider(
 							label=L('pad_val'),
-							value=0.75,
-							minimum=0.25,
-							maximum=2.0,
-							step=0.05,
+							value=5.0,
+							minimum=3.0,
+							maximum=7.0,
+							step=0.1,
 							interactive=True,
-					)
+						)
+						optimize = gr.Checkbox(
+							label=L('optimize'),
+							value=True,
+							interactive=True,
+						)
 					gr.Markdown(f"### {L('encoding_options')}")
 
 					encoder_active = gr.Checkbox(
@@ -238,6 +249,7 @@ def gui() -> None:
 					min_vol,
 					max_vol,
 					pad_val,
+					optimize,
 				], outputs=None)
 
 		gr.HTML("""
@@ -280,14 +292,4 @@ def gui() -> None:
 	)
 
 if __name__ == "__main__":
-	import click
-
-	@click.command()
-	@click.option('--debug', '-d', is_flag=True, help='Display developer messages.')
-	def main(debug: bool) -> None:
-		if debug:
-			logger.remove()
-			logger.add(sys.stdout, format=logger_format, level="DEBUG")
-		gui()
-
-	main()
+	gui()

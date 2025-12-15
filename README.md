@@ -14,7 +14,6 @@ UTACompiler is a tool that extracts the necessary audio from your UTAU library b
 
 ## Known Issues / To do list
 - It is extremely untested, and will not be fully released until I'm confident it works how I want.
-- If an oto line has multiple aliases, it will be split into n different segments. I want to implement an alias merge function.
 - It's highly possible that including generated audio will cause frq problems when using the UTAU. It's not feasable to create a way to splice up frq files, so I might implement something that ensures each file has some voiced singing samples.
 - It's possible that a VCV with CVVC aliases will end up a bigger file size than it started with, so I might make a function that pulls just the VCV segments and alises them with the CVVC. No idea how I'd go about that currently.
 

@@ -12,7 +12,16 @@ UTACompiler is a tool that extracts the necessary audio from your UTAU library b
   </a>
 </div>
 
-## How to use (Manual setup)
+## How to use - Portable version (RECOMMENDED)
+Step 1: Download the portable version from [here](). (Not ready yet)
+
+Step 2: Unzip to a folder.
+
+Step 3: Run "run_webapp.bat" and click allow if prompted by Python.
+
+Step 4: Follow directions on webapp.
+
+## How to use - Manual Setup
 Step 1: Clone the repository, setup a new environment (I use conda) and install requirements.
 ```
 git clone https://github.com/mrtigermeat/UTACompiler.git
@@ -27,7 +36,7 @@ Step 3: Open the gradio webapp.
 ```
 python webapp.py
 ```
-Step 3.5: Alternatively, use the command-line version of UTACompiler. You will need to place a copy of "utacompiler_config.yaml" into your voice library's folder, and adjust the settings accordingly. Reference the webapp to know what each option does. There is no need to include `-c <path_to_config>` if you place it in the voice libary's root.
+Step 3.5: Alternatively, use the command-line version of UTACompiler. You will need to place a copy of "utacompiler_config.yaml" into your voice library's folder, and adjust the settings accordingly. Reference the webapp to know what each option does. There is no need to include `-c <path_to_config>` if you place it in the voice library's root.
 ```
 python UTACompiler.py -c <path_to_config>
 ```

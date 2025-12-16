@@ -7,7 +7,7 @@ UTACompiler is a tool that extracts the necessary audio from your UTAU library b
   <p>
     <sub>No Generative AI was used in the creation of UTACompiler or any component written for it.</sub>
   </p>
-  <a href="https://notbyai.fyi/ target="_blank" rel="noopener noreferrer">
+  <a href="https://notbyai.fyi/" target="_blank" rel="noopener noreferrer">
     <img src="src/img/notbyai.png" alt="Not by AI badge.">
   </a>
 </div>

@@ -26,6 +26,8 @@ elif sys.platform == 'win32':
 	import locale
 	windll = ctypes.windll.kernel32
 	sys_lang = locale.windows_locale[windll.GetUserDefaultUILanguage()]
+else:
+	sys_lang = 'en_US' # fallback
 L = ezlocalizr(
 	language=sys_lang,
 	string_path=webapp_src/'strings',

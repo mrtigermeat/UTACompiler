@@ -6,3 +6,4 @@ tqdm
 gradio
 ez-localizr
 click
+pygithub

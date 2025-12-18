@@ -47,3 +47,9 @@ python UTACompiler.py -c <path_to_config>
 ```
 
 Output will be saved to `<db_path>/UTACompilerOutput`. Be sure to rigorously test your VB, and ensure it functions well and sounds right. Please report any issues to this repository!
+
+## Attribution
+
+French webapp translation by [Mim](https://bsky.app/profile/mimsynth.bsky.social)
+
+German webapp translation by [Gyromancy](https://bsky.app/profile/gyromancyx.bsky.social)

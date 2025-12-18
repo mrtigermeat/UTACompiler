@@ -12,6 +12,7 @@ recording_style: Voice Library Recording Style
 keep_files: Files to keep in the compiled Voice Library. Separate each with a comma.
 keep_folders: Folders to keep in the compiled Voice Library. NOT for Pitches. Separate each with a comma.
 pitches: Folders containing .wav and oto.ini files. Separate each with a comma.
+export_uar: Export .uar of compiled voice library.
 
 # right
 config_adv: Advanced Configuration

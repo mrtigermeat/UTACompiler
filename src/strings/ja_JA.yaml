@@ -12,6 +12,7 @@ recording_style: 記録方式
 keep_files: コンパイルされた音源に残しておきたいファイル。カンマで区切ってください。
 keep_folders: コンパイルされた音源に残しておきたいフォルダ。ピッチのためじゃない。カンマで区切ってください。
 pitches: .wavとoto.iniファイルがあるのフォルダ。カンマで区切ってください。
+export_uar: Export .uar of compiled voice library.
 
 # right
 config_adv: 先進構成

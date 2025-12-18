@@ -25,3 +25,4 @@ encoding:
   min_vol: 0.2
   max_vol: 0.6
   pad_val: 5.0 #ms
+export_uar: True

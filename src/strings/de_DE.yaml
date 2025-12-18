@@ -1,0 +1,35 @@
+# Translation by Gyromancy
+#top
+title: UTACompiler
+how_to: Tool erstellt durch [tigermeat](https://tigermeat.xyz). Bitte beruecksichtigen Sie die [Dokumentation](slay) fuer Anleitungen zur Nutzung des Tools.
+
+#left
+db_path: Dateipfad der UTAU Stimmdatenbank
+config: Konfiguration
+config_exp: Bitte passen Sie die Konfiguration entsprechend Ihrer UTAU Datenbank an.
+db_name: Name Ihrer Datenbank
+seed: Randomisierungsseed
+recording_style: Aufnahmeformat der Datenbank
+keep_files: Beizubehaltene Dateien der kompilierten Datenbank. NICHT fuer Pitches. Bitte jeden Ordner mit Komma trennen.
+keep_folders: Beizubehaltene Ordner der kompilierten Datenbank. Bitte jeden Ordner mit Komma trennen.
+pitches: Ordner, welche Dateien im .wav und oto.ini Format enthalten.Bitte jeden Ordner mit Komma trennen.
+export_uar: Export .uar of compiled voice library.
+
+#right
+config_adv: Fortgeschrittene Konfiguration
+config_adv_exp: Fortgeschrittene Konfigurationsoptionen. Wenn Sie sich nicht sicher sind, lassen Sie diese Optionen unveraendert.
+file_encoding: Dateicodierung
+run_button: Datenbank kompilieren
+scramble: Reihenfolge randomisieren
+glob_amt: Anzahl Samples pro Datei
+encoding_options: Codierungsoptionen
+encoder_active: Audiocodierung anwenden
+gen_options: Optionen fuer randomisiert generierte Audiocodierung
+pad_val: oto Offset & Cutoff Zugabewert
+optimize: Oto durch kondensieren identischer Eintraege optimieren
+min_frq: Minimale Frequenz des Tons
+max_frq: Maximale Frequenz des Tons
+min_dur: Minimale Dauer des Tons
+max_dur: Maximale Dauer des Tons
+min_vol: Minimale Lautstaerke des Tons
+max_vol: Maximale Lautstaerke des Tons

@@ -1,0 +1,35 @@
+# Translation by Mim
+# top
+title: UTACompiler
+how_to: Outil créé par [tigermeat](https://tigermeat.xyz). Veuillez vous référer à la documentation [ici](slay) pour plus d'informations.
+
+# left
+db_path: Chemin de la Voicebank UTAU
+config: Configuration
+config_exp: Veuillez ajuster la configuration à votre Voicebank UTAU.
+db_name: Nom de votre Voicebank.
+seed: Identifiant aléatoire (seed)
+recording_style: Style d'enregistrement de la Voicebank.
+keep_files: Fichiers à garder dans la Voicebank compilée. Séparer chaque fichier par une virgule.
+keep_folders: Dossiers à garder dans la Voicebank compilée. N'inclus PAS les Pitches. Séparer chaque dossier par une virgule.
+pitches: Dossiers contenant des fichiers .wav et oto.ini. Séparer chaque dossier par une virgule.
+export_uar: Export .uar of compiled voice library.
+
+# right
+config_adv: Configuration avancée
+config_adv_exp: Options de configuration avancée. Par défaut, laissez les options inchangées.
+file_encoding: Encodage des fichiers
+run_button: Compiler la Voicebank
+scramble: Rendre l'ordre aléatoire
+glob_amt: Nombre de samples par fichier.
+encoding_options: Options d'encodage
+encoder_active: Activer l'encodage audio
+gen_options: Options pour la génération aléatoire de l'encodage audio
+pad_val: Valeur de remplissage pour offset/cutoff de l'oto.
+optimize: Optimiser l'oto en fusionnant les entrées identiques.
+min_frq: Fréquence minimum de la note
+max_frq: Fréquence maximum de la note
+min_dur: Durée minimum de la note
+max_dur: Durée maximum de la note
+min_vol: Volume minimum de la note
+max_vol: Volume maximum de la note

@@ -57,6 +57,7 @@ def run_tool(
 	max_vol: float,
 	pad_val: float,
 	optimize: bool,
+	export_uar: bool,
 ) -> None:
 	config = {}
 	config['name'] = db_name
@@ -83,6 +84,7 @@ def run_tool(
 	config['encoding']['pad_val'] = pad_val
 	config['encoding']['optimize'] = optimize
 	config['recording_style'] = recording_style
+	config['export_uar'] = export_uar
 	
 	try:
 		utacompiler(db_path, config)
@@ -131,12 +133,18 @@ def gui() -> None:
 						label=L('pitches'),
 						placeholder='C4, Whisper, CVVC, ...'
 					)
-					encoding = gr.Radio(
-						choices=['utf-8', 'shift-jis'],
-						value='shift-jis',
-						label=L('file_encoding'),
-						interactive=True
-					)
+					with gr.Row():
+						encoding = gr.Radio(
+							choices=['utf-8', 'shift-jis'],
+							value='shift-jis',
+							label=L('file_encoding'),
+							interactive=True
+						)
+						export_uar = gr.Checkbox(
+								label=L('export_uar'),
+								value=True,
+								interactive=True
+						)
 
 			# COLUMN 2
 			with gr.Column():
@@ -252,6 +260,7 @@ def gui() -> None:
 					max_vol,
 					pad_val,
 					optimize,
+					export_uar,
 				], outputs=None)
 
 		gr.HTML("""

@@ -8,7 +8,7 @@ from ftfy import fix_text
 from itertools import islice
 from tqdm import tqdm
 
-from utils.utils import n_float
+from utils import n_float
 from utils.logger_utils import get_logger
 
 logger = get_logger(level="INFO")

@@ -16,8 +16,8 @@ os.environ['PYTHONPATH'] = str(root_dir)
 sys.path.insert(0, str(root_dir))
 
 # UTACompiler specific imports
+from utils import load_config, n_float, export_uar
 from utils.audio_utils import generate_tone, process_audiosegment, match_amplitude
-from utils.utils import load_config, n_float
 from utils.logger_utils import get_logger
 from utils.oto_utils import load_oto, oto_chunker, reconstruct_oto, oto_condenser
 
@@ -147,10 +147,11 @@ def utacompiler(db_path: Path, config: dict) -> None:
 
 	oto = []
 	for pitch in config['files']['pitches']:
-		logger.info(f'Parsing oto.ini for pitch: {pitch}')
 		pitch_path = db_path / pitch
-		pitch_oto = load_oto(pitch_path, config)
-		oto.extend(pitch_oto)
+		if pitch_path.exists():
+			logger.info(f'Parsing oto.ini for pitch: {pitch}')
+			pitch_oto = load_oto(pitch_path, config)
+			oto.extend(pitch_oto)
 
 	if config['files']['scramble']:
 		oto = sorted(oto, key=lambda x: random.random())
@@ -161,6 +162,10 @@ def utacompiler(db_path: Path, config: dict) -> None:
 		new_oto = oto_condenser(new_oto)
 
 	reconstruct_oto(new_oto, config, build_path)
+
+	if config['export_uar']:
+		export_uar(db_path, build_path, config)
+
 	logger.success('UTACompiler has completed your voice library. Please rigorously test to ensure everything is well.')
 
 if __name__ == "__main__":
